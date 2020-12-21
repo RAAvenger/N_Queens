@@ -2,13 +2,19 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class NQueens {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("how many queens?");
         int n = scanner.nextInt();
-        Backtracking resultFinder = new Backtracking(n, new Random(new Date().getTime()));
+        Backtracking resultFinder = new Backtracking(
+                n,
+                new Random(new Date().getTime()),
+                (ThreadPoolExecutor) Executors.newFixedThreadPool(2)
+        );
 //        MinConflicts resultFinder = new MinConflicts(n);
         HashMap<Integer, Integer> result = new HashMap<>();
         resultFinder.FindResult(result);
@@ -25,5 +31,6 @@ public class NQueens {
             }
             System.out.println("|");
         }
+        System.exit(1);
     }
 }
