@@ -1,4 +1,6 @@
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 
 public class NQueens {
@@ -6,13 +8,14 @@ public class NQueens {
         Scanner scanner = new Scanner(System.in);
         System.out.println("how many queens?");
         int n = scanner.nextInt();
-        Backtracking resultFinder = new Backtracking(n);
+        Backtracking resultFinder = new Backtracking(n, new Random(new Date().getTime()));
 //        MinConflicts resultFinder = new MinConflicts(n);
         HashMap<Integer, Integer> result = new HashMap<>();
         resultFinder.FindResult(result);
         for (int key : result.keySet())
             System.out.println(key + ": " + result.get(key));
-        scanner.next();
+        scanner.nextLine();
+        scanner.nextLine();
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (result.get(i) == j)
