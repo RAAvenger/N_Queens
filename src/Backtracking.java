@@ -47,8 +47,11 @@ public class Backtracking {
      * @return the variable with Minimum Remaining Values( the one with smallest domain ).
      */
     private int FindVariableWithMRV(HashMap<Integer, Integer> assignments, HashSet<Integer> conflictedValues) {
-        if (assignments.isEmpty()) {
-            return randomGenerator.nextInt(variablesCount);
+        if (assignments.size() < 2) {
+            int randomVariable = randomGenerator.nextInt(variablesCount);
+            while (assignments.containsKey(randomVariable))
+                randomVariable = randomGenerator.nextInt(variablesCount);
+            return randomVariable;
         }
         int maxConflictedValuesCount = 0;
         int bestVariable = -1;
