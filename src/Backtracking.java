@@ -26,7 +26,7 @@ public class Backtracking {
         int variable = FindVariableWithMRV(assignments, conflictedValues);
         if (conflictedValues.size() == variablesCount)
             return false;
-        PriorityQueue<CandidateValue> candidateValues = GetCandidateValuesForVariable(assignments, variable, conflictedValues);
+        PriorityQueue<Value> candidateValues = GetCandidateValuesForVariable(assignments, variable, conflictedValues);
         while (!candidateValues.isEmpty()) {
             int value = candidateValues.poll().value;
 //            if (!conflictedValues.contains(value)) {
@@ -87,8 +87,8 @@ public class Backtracking {
      * @param conflictedValues values that are out of the variable's domain of values.
      * @return priority queue of condition values( order is number of conflicts. ).
      */
-    public PriorityQueue<CandidateValue> GetCandidateValuesForVariable(HashMap<Integer, Integer> assignments, int variable, HashSet<Integer> conflictedValues) {
-        PriorityQueue<CandidateValue> candidateValues = new PriorityQueue<>();
+    public PriorityQueue<Value> GetCandidateValuesForVariable(HashMap<Integer, Integer> assignments, int variable, HashSet<Integer> conflictedValues) {
+        PriorityQueue<Value> candidateValues = new PriorityQueue<>();
         for (int value = 0; value < variablesCount; value++) {
             if (!conflictedValues.contains(value)) {
                 HashMap<Integer, HashSet<Integer>> intersections = new HashMap<>();
@@ -195,7 +195,7 @@ public class Backtracking {
                     if (!assignments.containsKey(i) && !(intersections.containsKey(i) && intersections.get(i).contains(j)))
                         conflicts++;
                 }
-                candidateValues.add(new CandidateValue(value, conflicts));
+                candidateValues.add(new Value(value, conflicts));
             }
         }
         return candidateValues;
@@ -205,11 +205,11 @@ public class Backtracking {
 /**
  * simple class for candidate values of variables.
  */
-class CandidateValue implements Comparable {
+class Value implements Comparable {
     int value;
     int conflicts;
 
-    public CandidateValue(int value, int conflicts) {
+    public Value(int value, int conflicts) {
         this.value = value;
         this.conflicts = conflicts;
     }
@@ -217,7 +217,7 @@ class CandidateValue implements Comparable {
     @Override
     public int compareTo(Object o) {
         try {
-            CandidateValue cv = (CandidateValue) o;
+            Value cv = (Value) o;
             return conflicts - cv.conflicts;
         } catch (Exception e) {
             return 0;
