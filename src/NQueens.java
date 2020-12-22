@@ -8,10 +8,11 @@ public class NQueens {
         Scanner scanner = new Scanner(System.in);
         System.out.println("how many queens?");
         int n = scanner.nextInt();
-        Backtracking resultFinder = new Backtracking(n, new Random(new Date().getTime()));
-//        MinConflicts resultFinder = new MinConflicts(n);
-        HashMap<Integer, Integer> result = new HashMap<>();
-        resultFinder.FindResult(result);
+//        Backtracking resultFinder = new Backtracking(n, new Random(new Date().getTime()));
+//        HashMap<Integer, Integer> result = new HashMap<>();
+//        resultFinder.FindResult(result);
+        MinConflicts resultFinder = new MinConflicts(n, new Random(new Date().getTime()));
+        HashMap<Integer, Integer> result = resultFinder.FindResult();
         for (int key : result.keySet())
             System.out.println(key + ": " + result.get(key));
         scanner.nextLine();
