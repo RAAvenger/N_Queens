@@ -20,16 +20,20 @@ public class MinConflicts {
         HashMap<Integer, Integer> assignments = FillBoardRandomly();
         HashSet<Integer> conflictedVariables = new HashSet<>();
         int conflicts = HasConflict(assignments, conflictedVariables);
+        int randomChance = 0;
         while (conflicts != 0) {
             System.out.println(conflictedVariables.size());
             int randomVariableIndex = randomGenerator.nextInt(conflictedVariables.size());
             int randomVariable = (int) conflictedVariables.toArray()[randomVariableIndex];
             conflictedVariables.clear();
-            int bestValue = GetBestValueForVariable(assignments, randomVariable);
+            int bestValue = GetBestValueForVariable(assignments, randomVariable, randomChance);
             assignments.replace(randomVariable, bestValue);
             int newConflicts = HasConflict(assignments, conflictedVariables);
-            if (conflicts == newConflicts)
-                System.out.println("OH NOOOOOOOOO! Add some randomness, you are in infinity loop.");
+            if (conflicts == newConflicts) {
+                randomChance++;
+                System.out.println("Random chance increased to: "+randomChance);
+            } else
+                randomChance = 0;
             conflicts = newConflicts;
         }
         return assignments;
@@ -38,11 +42,14 @@ public class MinConflicts {
     /**
      * find value with minimum conflicts for given variable and return it.
      *
-     * @param assignments pairs of variables and values.
-     * @param variable    randomly chosen variable.
+     * @param assignments  pairs of variables and values.
+     * @param variable     randomly chosen variable.
+     * @param randomChance chance of choosing a value randomly.
      * @return best value for given variable.
      */
-    private int GetBestValueForVariable(HashMap<Integer, Integer> assignments, int variable) {
+    private int GetBestValueForVariable(HashMap<Integer, Integer> assignments, int variable, int randomChance) {
+        if (randomChance > randomGenerator.nextInt(100))
+            return randomGenerator.nextInt(variablesCount);
         int[] valuesConflicts = new int[variablesCount];
         for (int i = 0; i < variablesCount; i++) {
             if (i != variable) {
